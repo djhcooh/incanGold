@@ -18,24 +18,24 @@ object IncanGold {
     removedTraps = Array.fill(5)(0)
     var yn = ""
     do {
-      game
+      game()
       yn = yesOrNo("Play again?", "y", "n")
     } while (yn == "y")
   }
 
   def game() {
-    setPlayers
+    setPlayers()
     setExplorationCards(0)
     for (i <- 1 to 5) {
-      addRelic
+      addRelic()
       explorationCards = shuffle(explorationCards)
-      if (i > 1) players(0).showScore
+      if (i > 1) players(0).showScore()
       println("[ROUND" + i + "]")
-      exploration
+      exploration()
     }
     println("[Result]")
     for (player <- players)
-      player.showScore
+      player.showScore()
   }
 
   def exploration() {
@@ -57,7 +57,7 @@ object IncanGold {
         for (r <- recent if r == "b") backRecent += 1
         for (i <- 0 until recent.length if recent(i) != "") {
           recent(i) match {
-            case "g" => players(i).go
+            case "g" => players(i).go()
             case "b" =>
               if (backRecent == 1)
                 players(i).back(waySum(backRecent), relic(true))          
@@ -72,7 +72,7 @@ object IncanGold {
       if (inTheRuins > 0) {
         way += explorationCards.remove(0)
         showCards(way(progress))
-        showWay
+        showWay()
         if (way(progress) < 99) {
           for (player <- players if player.isExploring)
             player.temp += (way(progress) / inTheRuins)
@@ -85,7 +85,7 @@ object IncanGold {
     val relicInTheRuin = relic(true)
     if (traps.max >= 2) {
       for (player <- players if player.isExploring)
-        player.death
+        player.death()
       removedTraps(way.remove(way.length - 1) - 100) += 1
     }
     setExplorationCards(relicInTheRuin)
@@ -162,7 +162,7 @@ object IncanGold {
         explorationCards += i
     // add relics
     for (i <- 0 until relicInTheRuin)
-      addRelic
+      addRelic()
     explorationCards = shuffle(explorationCards)
   }
 
