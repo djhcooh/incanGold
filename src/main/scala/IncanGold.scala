@@ -5,17 +5,14 @@ import scala.io.StdIn.readLine
 import scala.collection.mutable.ArrayBuffer
 
 object IncanGold {
-  private var players: ArrayBuffer[Player] = _
-  private var way: ArrayBuffer[Int] = _
-  private var explorationCards: ArrayBuffer[Int] = _
+  private var players: ArrayBuffer[Player] = ArrayBuffer.empty
+  private var way: ArrayBuffer[Int] = ArrayBuffer.empty
+  private var explorationCards: ArrayBuffer[Int] = ArrayBuffer.empty
   // 0:zombie, 1:poison spider, 2:big snake, 3:flame, 4:rockfall
-  private var traps: Array[Int] = _
-  private var removedTraps: Array[Int] = _
+  private var traps: Array[Int] = Array.fill(5)(0)
+  private var removedTraps: Array[Int] = Array.fill(5)(0)
 
   def main(args: Array[String]): Unit = {
-    way = ArrayBuffer.empty[Int]
-    traps = Array.fill(5)(0)
-    removedTraps = Array.fill(5)(0)
     var yn = ""
     do {
       game()
