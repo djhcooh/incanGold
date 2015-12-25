@@ -70,7 +70,7 @@ object IncanGold {
         way += explorationCards.remove(0)
         showCards(way(progress))
         showWay()
-        if (way(progress) < 99) {
+        if (isGem(way(progress))) {
           for (player <- players if player.isExploring)
             player.temp += (way(progress) / inTheRuins)
           way(progress) %= inTheRuins
@@ -83,7 +83,7 @@ object IncanGold {
     if (traps.max >= 2) {
       for (player <- players if player.isExploring)
         player.death()
-      removedTraps(way.remove(way.length - 1) - 100) += 1
+      removedTraps(way.remove(way.length - 1) - TRAPS.min) += 1
     }
     setExplorationCards(relicInTheRuin)
     way.clear
@@ -107,17 +107,17 @@ object IncanGold {
 
   def showCards(card: Int): Unit = {
     val trap = card match {
-      case 100 => "zombie"
-      case 101 => "poison spider"
-      case 102 => "big snake"
-      case 103 => "flame"
-      case 104 => "rockfall"
+      case ZOMBIE => "zombie"
+      case POISON_SPIDER => "poison spider"
+      case BIG_SNAKE => "big snake"
+      case FLAME => "flame"
+      case ROCKFAIL => "rockfall"
       case _ => ""
     }
-    if (card >= 100 && card <= 104) {
-      traps(card - 100) += 1
+    if (isTrap(card)) {
+      traps(card - TRAPS.min) += 1
       println("!!!We were ataccked by a " + trap + "!!!")
-    } else if (card == 99) {
+    } else if (isRelic(card)) {
       println("***We found the relic***")
     } else {
       println("We have found " + card + " gems")
@@ -126,20 +126,20 @@ object IncanGold {
 
   def waySum(backRecent: Int): Int = {
     var sum = 0
-    for (i <- 0 until way.length if way(i) < 99) {
+    for (i <- 0 until way.length if isGem(way(i))) {
       sum += (way(i) / backRecent)
     }
     sum
   }
 
   def wayRefresh(backRecent: Int): Unit = {
-    for (i <- 0 until way.length if way(i) < 99)
+    for (i <- 0 until way.length if isGem(way(i)))
       way(i) %= backRecent
   }
 
   def relic(back: Boolean): Int = {
     var sum = 0
-    for (i <- 0 until way.length if way(i) == 99) {
+    for (i <- 0 until way.length if isRelic(way(i))) {
       if (back) way(i) = 0
       sum += 1
     }
@@ -149,13 +149,11 @@ object IncanGold {
   def setExplorationCards(relicInTheRuin: Int): Unit = {
     explorationCards = ArrayBuffer.empty[Int]
     // add gems
-    for (i <- 1 to 15)
-      explorationCards += i
-    
+    explorationCards.appendAll(GEMS)
+
     // add traps
-    // 100:zombie, 101:poison spider, 102:big snake, 103:flame, 104:rockfall
-    for (i <- 100 to 104)
-      for (j <- 0 until 3 - removedTraps(i - 100))
+    for (i <- TRAPS)
+      for (j <- 0 until 3 - removedTraps(i - TRAPS.min))
         explorationCards += i
     // add relics
     for (i <- 0 until relicInTheRuin)
@@ -164,8 +162,7 @@ object IncanGold {
   }
 
   def addRelic(): Unit = {
-    // 99:relic
-    explorationCards += 99
+    explorationCards += RELIC
   }
 
   def setPlayers(): Unit = {
@@ -185,4 +182,17 @@ object IncanGold {
       }
     }
   }
+
+  private val GEMS: Seq[Int] = 1 to 15
+  private val RELIC: Int = 99
+  private val ZOMBIE: Int = 100
+  private val POISON_SPIDER: Int = 101
+  private val BIG_SNAKE: Int = 102
+  private val FLAME: Int = 103
+  private val ROCKFAIL: Int = 104
+  private val TRAPS = Seq(ZOMBIE, POISON_SPIDER, BIG_SNAKE, FLAME, ROCKFAIL)
+
+  private def isGem(cardNum: Int): Boolean = GEMS.contains(cardNum) || cardNum == 0
+  private def isRelic(cardNum: Int): Boolean = cardNum == RELIC
+  private def isTrap(cardNum: Int): Boolean = TRAPS.contains(cardNum)
 }
