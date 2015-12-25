@@ -36,7 +36,7 @@ class Player(val playerNum: Int) {
     println(playerName + " score is " + scoring + " points")
   }
 
-  def think(gem: Int, relic: Int)(traps: Int*)(removedTraps: Int*): String = {
+  def think(gem: Int, relic: Int)(traps: Seq[Int])(removedTraps: Seq[Int]): String = {
     traps.sum match {
       case 0 | 1 => "g"
       case 2 =>
@@ -68,7 +68,7 @@ class Player(val playerNum: Int) {
 }
 
 class Chicken(pNum: Int) extends Player(pNum) {
-  override def think(gem: Int, relic: Int)(traps: Int*)(removedTraps: Int*): String = {
+  override def think(gem: Int, relic: Int)(traps: Seq[Int])(removedTraps: Seq[Int]): String = {
     traps.sum match {
       case 0 => "g"
       case 1 =>
@@ -80,7 +80,7 @@ class Chicken(pNum: Int) extends Player(pNum) {
 }
 
 class Boldness(pNum: Int) extends Player(pNum) {
-  override def think(gem: Int, relic: Int)(traps: Int*)(removedTraps: Int*): String = {
+  override def think(gem: Int, relic: Int)(traps: Seq[Int])(removedTraps: Seq[Int]): String = {
     traps.sum match {
       case 0 | 1 | 2 => "g"
       case 3 =>

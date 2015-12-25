@@ -50,7 +50,7 @@ object IncanGold {
             recent(0) = yesOrNo("Go or Back?", "g", "b")
           } else {
             recent(player.playerNum) = 
-              player.think(waySum(1), relic(false))(traps:_*)(removedTraps:_*)
+              player.think(waySum(1), relic(false))(traps)(removedTraps)
           }
         }
         var backRecent = 0
