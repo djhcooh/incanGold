@@ -129,20 +129,20 @@ object IncanGold {
 
   def waySum(backRecent: Int): Int = {
     var sum = 0
-    for (i <- 0 until way.length if (way(i) < 99)) {
+    for (i <- 0 until way.length if way(i) < 99) {
       sum += (way(i) / backRecent)
     }
     sum
   }
 
   def wayRefresh(backRecent: Int): Unit = {
-    for (i <- 0 until way.length if (way(i) < 99))
+    for (i <- 0 until way.length if way(i) < 99)
       way(i) %= backRecent
   }
 
   def relic(back: Boolean): Int = {
     var sum = 0
-    for (i <- 0 until way.length if (way(i) == 99)) {
+    for (i <- 0 until way.length if way(i) == 99) {
       if (back) way(i) = 0
       sum += 1
     }
