@@ -12,7 +12,7 @@ object IncanGold {
   private var traps: Array[Int] = _
   private var removedTraps: Array[Int] = _
 
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
     way = ArrayBuffer.empty[Int]
     traps = Array.fill(5)(0)
     removedTraps = Array.fill(5)(0)
@@ -23,7 +23,7 @@ object IncanGold {
     } while (yn == "y")
   }
 
-  def game() {
+  def game(): Unit = {
     setPlayers()
     setExplorationCards(0)
     for (i <- 1 to 5) {
@@ -38,7 +38,7 @@ object IncanGold {
       player.showScore()
   }
 
-  def exploration() {
+  def exploration(): Unit = {
     var progress = 0
     players.foreach(n => n.isExploring = true)
     traps = Array.fill(5)(0)
@@ -100,7 +100,7 @@ object IncanGold {
     n
   }
 
-  def showWay() {
+  def showWay(): Unit = {
     for (i <- 0 until way.length) {
       if (i % 5 == 0 && i != 0) println("->")
       print("|" + "%1$3d".format(way(i)) + "|")
@@ -108,7 +108,7 @@ object IncanGold {
     println
   }
 
-  def showCards(card: Int) {
+  def showCards(card: Int): Unit = {
     val trap = card match {
       case 100 => "zombie"
       case 101 => "poison spider"
@@ -135,7 +135,7 @@ object IncanGold {
     sum
   }
 
-  def wayRefresh(backRecent: Int) {
+  def wayRefresh(backRecent: Int): Unit = {
     for (i <- 0 until way.length if (way(i) < 99))
       way(i) %= backRecent
   }
@@ -149,7 +149,7 @@ object IncanGold {
     sum
   }
 
-  def setExplorationCards(relicInTheRuin: Int) {
+  def setExplorationCards(relicInTheRuin: Int): Unit = {
     explorationCards = ArrayBuffer.empty[Int]
     // add gems
     for (i <- 1 to 15)
@@ -166,12 +166,12 @@ object IncanGold {
     explorationCards = shuffle(explorationCards)
   }
 
-  def addRelic() {
+  def addRelic(): Unit = {
     // 99:relic
     explorationCards += 99
   }
 
-  def setPlayers() {
+  def setPlayers(): Unit = {
     players = ArrayBuffer.empty[Player]
     val numberOfPersons = readIntLoop("Please enter the number of persons(3~8) > ",
       "Please enter the correct value", 3, 8)

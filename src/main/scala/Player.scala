@@ -8,11 +8,11 @@ class Player(val playerNum: Int) {
   private var relics = 0
   var isExploring = false
 
-  def go() {
+  def go(): Unit = {
     println(playerName + " action:Go")
   }
   
-  def back(gem: Int, relic: Int) {
+  def back(gem: Int, relic: Int): Unit = {
     val reward = "gem:" + (gem + temp) + ", relic:" + relic
     println(playerName + " action:Back(Reward:" + reward + ")")
     tent += (gem + temp)
@@ -21,7 +21,7 @@ class Player(val playerNum: Int) {
     temp = 0
   }
 
-  def death() {
+  def death(): Unit = {
     temp = 0
     println(playerName + " action led to death")
   }
@@ -32,7 +32,7 @@ class Player(val playerNum: Int) {
     score
   }
 
-  def showScore() {
+  def showScore(): Unit = {
     println(playerName + " score is " + scoring + " points")
   }
 
