@@ -31,8 +31,7 @@ object IncanGold {
       exploration()
     }
     println("[Result]")
-    for (player <- players)
-      player.showScore()
+    players.foreach(_.showScore())
   }
 
   def exploration(): Unit = {
@@ -41,8 +40,8 @@ object IncanGold {
     traps = Array.fill(5)(0)
     do {
       if (traps.max > 0) {
-        var recent = Array.fill(players.length)("")
-        for (player <- players if player.isExploring ) {
+        val recent = Array.fill(players.length)("")
+        players.filter(_.isExploring).foreach { player =>
             if (player.playerNum == 0) {
             recent(0) = yesOrNo("Go or Back?", "g", "b")
           } else {
@@ -50,8 +49,7 @@ object IncanGold {
               player.think(waySum(1), relic(false))(traps)(removedTraps)
           }
         }
-        var backRecent = 0
-        for (r <- recent if r == "b") backRecent += 1
+        val backRecent = recent.count(_ == "b")
         for (i <- 0 until recent.length if recent(i) != "") {
           recent(i) match {
             case "g" => players(i).go()
@@ -71,8 +69,9 @@ object IncanGold {
         showCards(way(progress))
         showWay()
         if (isGem(way(progress))) {
-          for (player <- players if player.isExploring)
+          players.filter(_.isExploring).foreach { player =>
             player.temp += (way(progress) / inTheRuins)
+          }
           way(progress) %= inTheRuins
         }
         progress += 1
@@ -81,8 +80,9 @@ object IncanGold {
     } while (traps.max < 2 && inTheRuins > 0)
     val relicInTheRuin = relic(true)
     if (traps.max >= 2) {
-      for (player <- players if player.isExploring)
+      players.filter(_.isExploring).foreach { player =>
         player.death()
+      }
       removedTraps(way.remove(way.length - 1) - TRAPS.min) += 1
     }
     setExplorationCards(relicInTheRuin)
@@ -91,10 +91,7 @@ object IncanGold {
   }
 
   def inTheRuins(): Int = {
-    var n = players.length
-    for (player <- players)
-      if (!player.isExploring) n -= 1
-    n
+    players.count(_.isExploring)
   }
 
   def showWay(): Unit = {
@@ -125,11 +122,7 @@ object IncanGold {
   }
 
   def waySum(backRecent: Int): Int = {
-    var sum = 0
-    for (i <- 0 until way.length if isGem(way(i))) {
-      sum += (way(i) / backRecent)
-    }
-    sum
+    way.filter(isGem).map(_ / backRecent).sum
   }
 
   def wayRefresh(backRecent: Int): Unit = {
@@ -138,12 +131,10 @@ object IncanGold {
   }
 
   def relic(back: Boolean): Int = {
-    var sum = 0
     for (i <- 0 until way.length if isRelic(way(i))) {
       if (back) way(i) = 0
-      sum += 1
     }
-    sum
+    way.count(isRelic)
   }
 
   def setExplorationCards(relicInTheRuin: Int): Unit = {
