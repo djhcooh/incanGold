@@ -1,9 +1,8 @@
 package ren.kujoka.IncanGold
 import scala.util.Random
 
-class Player(pNum: Int) {
-  val playerNum = pNum
-  private val playerName = if (pNum == 0) "Your" else (pNum + 1) + "P's"
+class Player(val playerNum: Int) {
+  private val playerName = if (playerNum == 0) "Your" else (playerNum + 1) + "P's"
   var temp = 0
   private var tent = 0
   private var relics = 0
