@@ -45,8 +45,8 @@ object IncanGold {
     do {
       if (traps.max > 0) {
         var recent = Array.fill(players.length)("")
-        for (player <- players if player.isExploring == true) {
-          if (player.playerNum == 0) {
+        for (player <- players if player.isExploring ) {
+            if (player.playerNum == 0) {
             recent(0) = yesOrNo("Go or Back?", "g", "b")
           } else {
             recent(player.playerNum) = 
@@ -74,7 +74,7 @@ object IncanGold {
         showCards(way(progress))
         showWay
         if (way(progress) < 99) {
-          for (player <- players if player.isExploring == true)
+          for (player <- players if player.isExploring)
             player.temp += (way(progress) / inTheRuins)
           way(progress) %= inTheRuins
         }
@@ -84,7 +84,7 @@ object IncanGold {
     } while (traps.max < 2 && inTheRuins > 0)
     val relicInTheRuin = relic(true)
     if (traps.max >= 2) {
-      for (player <- players if player.isExploring == true)
+      for (player <- players if player.isExploring)
         player.death
       removedTraps(way.remove(way.length - 1) - 100) += 1
     }
@@ -96,7 +96,7 @@ object IncanGold {
   def inTheRuins(): Int = {
     var n = players.length
     for (player <- players)
-      if (player.isExploring == false) n -= 1
+      if (!player.isExploring) n -= 1
     n
   }
 
@@ -143,7 +143,7 @@ object IncanGold {
   def relic(back: Boolean): Int = {
     var sum = 0
     for (i <- 0 until way.length if (way(i) == 99)) {
-      if (back == true) way(i) = 0
+      if (back) way(i) = 0
       sum += 1
     }
     sum
