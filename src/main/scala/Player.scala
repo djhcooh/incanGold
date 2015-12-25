@@ -2,12 +2,12 @@ package ren.kujoka.IncanGold
 import scala.util.Random
 
 class Player(pNum: Int) {
-  private val playerNum_ = pNum
+  val playerNum = pNum
   private val playerName = if (pNum == 0) "Your" else (pNum + 1) + "P's"
-  private var temp_ = 0
+  var temp = 0
   private var tent = 0
   private var relics = 0
-  private var isExploring_ = false
+  var isExploring = false
 
   def go() {
     println(playerName + " action:Go")
@@ -18,7 +18,7 @@ class Player(pNum: Int) {
     println(playerName + " action:Back(Reward:" + reward + ")")
     tent += (gem + temp)
     relics += relic
-    isExploring_ = false
+    isExploring = false
     temp = 0
   }
 
@@ -66,16 +66,6 @@ class Player(pNum: Int) {
         if (temp > 0) "b" else "g"
     }
   }
-
-  def playerNum = playerNum_
-
-  def temp = temp_
-
-  def temp_= (newTemp: Int) = temp_ = newTemp
-
-  def isExploring = isExploring_
-
-  def isExploring_= (newIsExploring: Boolean) = isExploring_ = newIsExploring
 }
 
 class Chicken(pNum: Int) extends Player(pNum) {
