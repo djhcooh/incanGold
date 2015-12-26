@@ -1,28 +1,27 @@
 package ren.kujoka.IncanGold
 import scala.util.Random
 
-class Player(pNum: Int) {
-  private val playerNum_ = pNum
-  private val playerName = if (pNum == 0) "Your" else (pNum + 1) + "P's"
-  private var temp_ = 0
+class Player(val playerNum: Int) {
+  private val playerName = if (playerNum == 0) "Your" else (playerNum + 1) + "P's"
+  var temp = 0
   private var tent = 0
   private var relics = 0
-  private var isExploring_ = false
+  var isExploring = false
 
-  def go() {
+  def go(): Unit = {
     println(playerName + " action:Go")
   }
   
-  def back(gem: Int, relic: Int) {
+  def back(gem: Int, relic: Int): Unit = {
     val reward = "gem:" + (gem + temp) + ", relic:" + relic
     println(playerName + " action:Back(Reward:" + reward + ")")
     tent += (gem + temp)
     relics += relic
-    isExploring_ = false
+    isExploring = false
     temp = 0
   }
 
-  def death() {
+  def death(): Unit = {
     temp = 0
     println(playerName + " action led to death")
   }
@@ -33,11 +32,11 @@ class Player(pNum: Int) {
     score
   }
 
-  def showScore() {
+  def showScore(): Unit = {
     println(playerName + " score is " + scoring + " points")
   }
 
-  def think(gem: Int, relic: Int)(traps: Int*)(removedTraps: Int*): String = {
+  def think(gem: Int, relic: Int)(traps: Seq[Int])(removedTraps: Seq[Int]): String = {
     traps.sum match {
       case 0 | 1 => "g"
       case 2 =>
@@ -66,20 +65,10 @@ class Player(pNum: Int) {
         if (temp > 0) "b" else "g"
     }
   }
-
-  def playerNum = playerNum_
-
-  def temp = temp_
-
-  def temp_= (newTemp: Int) = temp_ = newTemp
-
-  def isExploring = isExploring_
-
-  def isExploring_= (newIsExploring: Boolean) = isExploring_ = newIsExploring
 }
 
 class Chicken(pNum: Int) extends Player(pNum) {
-  override def think(gem: Int, relic: Int)(traps: Int*)(removedTraps: Int*): String = {
+  override def think(gem: Int, relic: Int)(traps: Seq[Int])(removedTraps: Seq[Int]): String = {
     traps.sum match {
       case 0 => "g"
       case 1 =>
@@ -91,7 +80,7 @@ class Chicken(pNum: Int) extends Player(pNum) {
 }
 
 class Boldness(pNum: Int) extends Player(pNum) {
-  override def think(gem: Int, relic: Int)(traps: Int*)(removedTraps: Int*): String = {
+  override def think(gem: Int, relic: Int)(traps: Seq[Int])(removedTraps: Seq[Int]): String = {
     traps.sum match {
       case 0 | 1 | 2 => "g"
       case 3 =>
